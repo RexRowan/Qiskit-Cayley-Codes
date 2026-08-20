@@ -83,5 +83,4 @@ Apache-2.0. See [LICENSE](LICENSE).
 
 ## Citation
 
-If you use this package, please cite both the CDZ paper above and this
-repository.
+If you use this package, please cite the CDZ paper too.
