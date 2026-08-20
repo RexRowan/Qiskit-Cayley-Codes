@@ -1,11 +1,9 @@
-# qiskit-cayley-codes
+# Qiskit Cayley Codes
 
 CSS quantum code construction from Cayley graphs over F_2^n, connecting
 original research on ℓ-zero-sumfree sets and the Davenport constant to
 the quantum LDPC code construction of Couvreur, Delfosse & Zémor.
 
-[![Tests](https://github.com/RexRowan/qiskit-cayley-codes/actions/workflows/test.yml/badge.svg)](https://github.com/RexRowan/qiskit-cayley-codes/actions/workflows/test.yml)
-[![PyPI](https://img.shields.io/pypi/v/qiskit-cayley-codes.svg)](https://pypi.org/project/qiskit-cayley-codes/)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 
 ## What this is
