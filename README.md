@@ -1,9 +1,11 @@
-# Qiskit Cayley Codes
+# qiskit-cayley-codes
 
 CSS quantum code construction from Cayley graphs over F_2^n, connecting
 original research on ℓ-zero-sumfree sets and the Davenport constant to
 the quantum LDPC code construction of Couvreur, Delfosse & Zémor.
 
+[![Tests](https://github.com/RexRowan/qiskit-cayley-codes/actions/workflows/test.yml/badge.svg)](https://github.com/RexRowan/qiskit-cayley-codes/actions/workflows/test.yml)
+[![PyPI](https://img.shields.io/pypi/v/qiskit-cayley-codes.svg)](https://pypi.org/project/qiskit-cayley-codes/)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 
 ## What this is
@@ -34,13 +36,13 @@ overlap with:
 
 ## Status
 
-Early stage. The Cayley graph construction, F_2 linear algebra
-utilities, and zero-sumfree set tooling are implemented and tested.
-The stabilizer derivation step (Cayley graph -> Hx/Hz) is being
-ported from a validated standalone replication of the CDZ construction
-and is not yet wired into the public `construct_cdz_code` entry point
--- see `qiskit_cayley_codes/construction.py` for exactly what's
-pending. Version numbers before 1.0 may change the API.
+Early stage but functional end-to-end: `construct_cdz_code` builds a
+validated CSS code from any F_2^n generating set with even
+cardinality, and its parameters are checked against the paper's own
+worked example (Theorem 18: N=8, K=4, D=2 for n=3). Version numbers
+before 1.0 may change the API. Automated generator-family search
+(varying S to optimize girth/rate/distance) is not yet implemented --
+see the Roadmap section.
 
 ## Install
 
@@ -60,16 +62,50 @@ pip install -e ".[dev]"
 
 ```python
 import numpy as np
-from qiskit_cayley_codes import cayley_graph, is_zero_sumfree
+from qiskit_cayley_codes import construct_cdz_code
 
-n = 4
-generators = [np.eye(n, dtype=int)[i] for i in range(n)]
+# Reproduces the paper's own worked example (Theorem 18): the [n,1,n]
+# repetition code's generators are the standard basis plus the
+# all-ones vector. n must be odd, and |S| = n+1 must be even.
+n = 3
+generators = [np.eye(n, dtype=np.uint8)[i] for i in range(n)]
+generators.append(np.ones(n, dtype=np.uint8))
 
-print(is_zero_sumfree(generators))  # True: standard basis has no zero-sum subset
-
-graph = cayley_graph(n, generators)
-print(graph.number_of_nodes(), graph.number_of_edges())
+code = construct_cdz_code(n, generators)
+print(code)                          # CDZCode(N=8, K=4, ...)
+print(code.min_distance_bruteforce())  # 2 -- matches [[8, 4, 2]] from the paper
 ```
+
+**Note on generating sets:** the CDZ construction requires an even
+number of (distinct, nonzero) generators -- this alone is sufficient
+to guarantee a valid CSS code over F_2^n (see the module docstring in
+`construction.py` for why). `min_distance_bruteforce()` is exact but
+exponential in dim(Ker(Hx)), so it's only practical for small test
+codes; it is not a substitute for the paper's analytical bounds for
+real-sized codes.
+
+## Integration with qiskit-qec
+
+`CDZCode` has a `to_qiskit_qec()` method that converts `Hx`/`Hz` into a
+`qiskit_qec.codes.StabSubSystemCode`, so codes built here can be handed
+off to [Qiskit QEC](https://github.com/qiskit-community/qiskit-qec)'s
+decoders, circuit builders, and analysis tools rather than duplicating
+that machinery in this package.
+
+```python
+qec_code = code.to_qiskit_qec()
+```
+
+**Note:** `qiskit-qec` is not published on PyPI, so it isn't listed as
+a dependency here (PyPI rejects packages that depend on a direct GitHub
+URL). Install it yourself first:
+
+```bash
+pip install "qiskit-qec @ git+https://github.com/qiskit-community/qiskit-qec.git"
+```
+
+`to_qiskit_qec()` raises a clear `ImportError` with these instructions
+if it isn't installed.
 
 ## Testing
 
@@ -83,4 +119,5 @@ Apache-2.0. See [LICENSE](LICENSE).
 
 ## Citation
 
-If you use this package, please cite the CDZ paper too.
+If you use this package, please cite both the CDZ paper above and this
+repository.
