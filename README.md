@@ -109,6 +109,20 @@ if it isn't installed.
 pytest tests/ -v
 ```
 
+## Roadmap
+
+- [x] Cayley graph construction over F_2^n, F_2 linear algebra utilities
+- [x] ℓ-zero-sumfree set checking and Davenport constant utilities
+- [x] `construct_cdz_code`: full Cayley graph -> CSS code pipeline
+- [x] `to_qiskit_qec()` integration
+- [ ] Analytical minimum-distance bounds (Theorem 16) for real-sized
+      codes, as a complement to `min_distance_bruteforce()`
+- [ ] Automated generator-set search: use the zero-sumfree tooling to
+      search for S that optimizes girth, rate, or distance, rather
+      than requiring the caller to supply S by hand
+- [ ] Benchmark a family of codes generated this way against known
+      quantum LDPC constructions
+      
 ## License
 
 Apache-2.0. See [LICENSE](LICENSE).
