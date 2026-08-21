@@ -1,6 +1,19 @@
 # Changelog
 
 ## [Unreleased]
+- Fixed LICENSE: the previous file had truncated several sections of
+  the Apache-2.0 text from memory (missing definitions in Section 1,
+  abbreviated Sections 3-9). Replaced with the exact canonical text
+  (verified against GitHub's own choosealicense.com template) so
+  GitHub's license detector can identify it correctly.
+- Added `qiskit_cayley_codes/analysis.py`:
+  - `theorem16_lower_bound`: CDZ's Theorem 16 quantum distance bound,
+    computed from the small classical code C(W) (dimension w) rather
+    than brute-forcing the full 2^m-qubit code.
+  - `search_generator_sets`: ranks candidate generator combinations by
+    rate (K/N), using zero-sumfreeness as a girth proxy.
+  - `compare_to_known_families`: rough benchmark against toric and
+    planar surface code parameters at comparable code length.
 - Implemented `_derive_stabilizers`: Hx = Hz = adjacency matrix of
   Cay(F_2^n, S), valid whenever |S| is even (Couvreur-Delfosse-Zemor,
   Example 2). `construct_cdz_code` is now fully functional end-to-end.

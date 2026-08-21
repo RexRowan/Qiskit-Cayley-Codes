@@ -1,8 +1,12 @@
-# Qiskit Cayley Codes
+# qiskit-cayley-codes
 
 CSS quantum code construction from Cayley graphs over F_2^n, connecting
 original research on ℓ-zero-sumfree sets and the Davenport constant to
 the quantum LDPC code construction of Couvreur, Delfosse & Zémor.
+
+[![Tests](https://github.com/RexRowan/qiskit-cayley-codes/actions/workflows/test.yml/badge.svg)](https://github.com/RexRowan/qiskit-cayley-codes/actions/workflows/test.yml)
+[![PyPI](https://img.shields.io/pypi/v/qiskit-cayley-codes.svg)](https://pypi.org/project/qiskit-cayley-codes/)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 
 ## What this is
 
@@ -103,6 +107,36 @@ pip install "qiskit-qec @ git+https://github.com/qiskit-community/qiskit-qec.git
 `to_qiskit_qec()` raises a clear `ImportError` with these instructions
 if it isn't installed.
 
+## Analysis tools
+
+Beyond exact brute-force distance (only practical for tiny codes),
+`qiskit_cayley_codes.analysis` provides:
+
+```python
+from qiskit_cayley_codes import theorem16_lower_bound, search_generator_sets, compare_to_known_families
+
+# Apply the paper's own general lower bound (Theorem 16) without
+# brute-forcing the full 2^m-qubit quantum code:
+result = theorem16_lower_bound(m=30, w_generators=W)  # {'m', 'w', 'n', 'd', 'bound'}
+
+# Search candidate extra generators for good rate, using
+# zero-sumfreeness as a girth proxy:
+candidates = search_generator_sets(m=8, candidate_pool=pool, w=2)
+
+# Rough benchmark against toric/surface codes at comparable length:
+compare_to_known_families(N=code.n_qubits, D=code.min_distance_bruteforce())
+```
+
+`theorem16_lower_bound` only requires computing the exact distance of
+the *small* classical code C(W) (dimension w, not the full 2^m qubits),
+which is why it works at scales brute force can't reach -- but it only
+applies when that classical distance is >= 9, per the theorem's stated
+range. `compare_to_known_families` is a rough benchmarking aid: toric
+and surface codes are topological constructions with very different
+structure (constant stabilizer weight, geometric locality) from the
+CDZ family, so treat it as a starting point for comparison, not a
+rigorous equivalence.
+
 ## Testing
 
 ```bash
@@ -115,18 +149,17 @@ pytest tests/ -v
 - [x] ℓ-zero-sumfree set checking and Davenport constant utilities
 - [x] `construct_cdz_code`: full Cayley graph -> CSS code pipeline
 - [x] `to_qiskit_qec()` integration
-- [ ] Analytical minimum-distance bounds (Theorem 16) for real-sized
+- [x] Analytical minimum-distance bounds (Theorem 16) for real-sized
       codes, as a complement to `min_distance_bruteforce()`
-- [ ] Automated generator-set search: use the zero-sumfree tooling to
-      search for S that optimizes girth, rate, or distance, rather
-      than requiring the caller to supply S by hand
-- [ ] Benchmark a family of codes generated this way against known
-      quantum LDPC constructions
-      
+- [x] Generator-set search (`search_generator_sets`): ranks candidate
+      generating sets by rate, using zero-sumfreeness as a girth proxy
+- [x] Benchmark against known code families (`compare_to_known_families`):
+      toric and planar surface code parameters at comparable length
+
 ## License
 
 Apache-2.0. See [LICENSE](LICENSE).
 
 ## Citation
 
-If you use this package, please also cite the CDZ paper.
+If you use this package, please cite the CDZ paper above, and consider citing this repository as well.
