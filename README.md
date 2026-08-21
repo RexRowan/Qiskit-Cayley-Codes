@@ -1,7 +1,6 @@
 # Qiskit Cayley Codes
 
 [![Tests](https://github.com/RexRowan/qiskit-cayley-codes/actions/workflows/test.yml/badge.svg)](https://github.com/RexRowan/qiskit-cayley-codes/actions/workflows/test.yml)
-[![PyPI](https://img.shields.io/pypi/v/qiskit-cayley-codes.svg)](https://pypi.org/project/qiskit-cayley-codes/)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 
 CSS quantum code construction from Cayley graphs over F_2^n, connecting
