@@ -1,4 +1,4 @@
-# qiskit-cayley-codes
+# Qiskit Cayley Codes
 
 CSS quantum code construction from Cayley graphs over F_2^n, connecting
 original research on ℓ-zero-sumfree sets and the Davenport constant to
