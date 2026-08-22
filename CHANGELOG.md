@@ -1,15 +1,17 @@
 # Changelog
 
-## [Unreleased]
-- Fixed a real, still-present doc bug: `graph.py`'s module docstring said "one qubit
+## [0.1.1] - Unreleased
+- Fixed a real, still-present doc bug flagged independently by two
+  external AI reviews: `graph.py`'s module docstring said "one qubit
   per edge," left over from before `_derive_stabilizers` was
   implemented (qubits are on vertices, N=2^n) -- the wrong sentence in
   `construction.py` had been fixed earlier but this one was missed.
+  This bug shipped in the published 0.1.0.
 - `cayley_graph` now emits a `UserWarning` naming exactly how many
   zero/duplicate generators were dropped, instead of silently changing
   |S| -- since |S|'s parity matters downstream for
   `construct_cdz_code`, silently normalizing it away could mislead a
-  caller about what they actually built.
+  caller about what they actually built. Also not present in 0.1.0.
 - Fixed LICENSE: the previous file had truncated several sections of
   the Apache-2.0 text from memory (missing definitions in Section 1,
   abbreviated Sections 3-9). Replaced with the exact canonical text

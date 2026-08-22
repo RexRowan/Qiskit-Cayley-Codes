@@ -33,7 +33,7 @@ from .graph import cayley_graph
 from .utils import f2_rank, hamming_weight, int_to_vector, vector_to_int
 from .zero_sumfree import davenport_constant_upper_bound, is_zero_sumfree
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 __all__ = [
     "CDZCode",
