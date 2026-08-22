@@ -1,4 +1,7 @@
+import warnings
+
 import numpy as np
+import pytest
 
 from qiskit_cayley_codes.graph import cayley_graph
 
@@ -23,15 +26,26 @@ def test_single_generator_gives_perfect_matching():
 def test_zero_generator_ignored():
     n = 2
     gens = [np.array([0, 0], dtype=np.uint8), np.array([1, 0], dtype=np.uint8)]
-    g = cayley_graph(n, gens)
+    with pytest.warns(UserWarning, match="dropped 1 zero generator"):
+        g = cayley_graph(n, gens)
     assert g.graph["generators"] == [1]  # only the nonzero generator survives
 
 
 def test_duplicate_generators_deduplicated():
     n = 2
     gens = [np.array([1, 0], dtype=np.uint8), np.array([1, 0], dtype=np.uint8)]
-    g = cayley_graph(n, gens)
+    with pytest.warns(UserWarning, match="dropped 0 zero generator.*1 duplicate generator"):
+        g = cayley_graph(n, gens)
     assert len(g.graph["generators"]) == 1
+
+
+def test_no_warning_when_generators_are_clean():
+    n = 3
+    gens = [np.eye(n, dtype=np.uint8)[i] for i in range(n)]
+    with warnings.catch_warnings():
+        warnings.simplefilter("error")
+        g = cayley_graph(n, gens)  # should not raise: no zero/duplicate generators
+    assert len(g.graph["generators"]) == n
 
 
 def test_vertex_vector_attribute_consistent():
