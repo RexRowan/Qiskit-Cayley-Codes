@@ -1,8 +1,7 @@
 # Changelog
 
 ## [0.1.1] - Unreleased
-- Fixed a real, still-present doc bug flagged independently by two
-  external AI reviews: `graph.py`'s module docstring said "one qubit
+- Fixed a real, still-present doc bug: `graph.py`'s module docstring said "one qubit
   per edge," left over from before `_derive_stabilizers` was
   implemented (qubits are on vertices, N=2^n) -- the wrong sentence in
   `construction.py` had been fixed earlier but this one was missed.
